@@ -1,0 +1,76 @@
+{
+  "create": {
+    "steps": [
+      {
+        "id": "Inspect Values",
+        "name": "ubuntu",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo _APP_ID=${_APP_ID} _COFFEE_NAME=${_COFFEE_NAME} _SIZE=${_SIZE} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER} _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"
+        ]
+      },
+      
+    ]
+  },
+  "destroy": {
+    "steps": [
+      {
+        "id": "Inspect Values",
+        "name": "ubuntu",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo _APP_ID=${_APP_ID} _COFFEE_NAME=${_COFFEE_NAME} _SIZE=${_SIZE} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER} _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"
+        ]
+      },
+     
+    ]
+  },
+  "inputs": [
+    {
+      "param": "_COFFEE_NAME",
+      "label": "Coffee Type",
+      "description": "The type of coffee you would like to order.",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_SIZE",
+      "label": "Coffee Size",
+      "description": "What size coffee do you want?",
+      "type": "string",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "param": "_SERVICE_URL",
+      "label": "Service Url",
+      "description": "Service Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_TRIGGER_URL",
+      "label": "Cloud Build Trigger Url",
+      "description": "Cloud Build Trigger Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_REPO_URL",
+      "label": "Repo Url",
+      "description": "Repo Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_BUILD_URL",
+      "label": "Cloud Build Url",
+      "description": "Cloud Build Url",
+      "type": "string",
+      "required": true
+    }
+  ]
+}
