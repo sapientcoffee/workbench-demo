@@ -7,9 +7,6 @@
       "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/gitrey/community-templates/main/solution/gke-autopilot-cluster/cloudprovision.json",
       "version": "1.0.0",
       "tags": [
-        "gke",
-        "autopilot",
-        "vpc"
       ],
       "category": "solution",
       "lastModified": "2022-09-28T11:11:04.000Z",
@@ -21,8 +18,8 @@
       "id": 101,
       "name": "Coffee Maker",
       "description": "The most amazing coffee you will ever have",
-      "sourceUrl": "https://github.com/gitrey/community-templates/tree/main/solution/gke-accelerator",
-      "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/gitrey/community-templates/main/solution/gke-accelerator/cloudprovision.json",
+      "sourceUrl": "https://github.com/sapientcoffee/workbench-demo/tree/main/simple",
+      "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/sapientcoffee/workbench-demo/refs/heads/main/simple/cloudprovision.yaml",
       "version": "1.0.0",
       "tags": [
         "gke",
@@ -30,7 +27,7 @@
         "single-tenant"
       ],
       "category": "solution",
-      "lastModified": "2022-09-26T11:11:04.000Z",
+      "lastModified": "2024-09-23T11:11:04.000Z",
       "owner": "Rob",
       "email": "robedwards@google.com",
       "draft": false
