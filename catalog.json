@@ -18,7 +18,7 @@
     },
     {
       "id": 101,
-      "name": "GKE Accelerator",
+      "name": "Coffee Maker",
       "description": "Simplify the deployment of everything you need to start containerized app development.",
       "sourceUrl": "https://github.com/gitrey/community-templates/tree/main/solution/gke-accelerator",
       "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/gitrey/community-templates/main/solution/gke-accelerator/cloudprovision.json",
