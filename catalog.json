@@ -14,12 +14,13 @@
       "category": "solution",
       "lastModified": "2022-09-28T11:11:04.000Z",
       "owner": "Community",
-      "email": "community-template-feedback@community777.com"
+      "email": "community-template-feedback@community777.com",
+      "draft": true
     },
     {
       "id": 101,
       "name": "Coffee Maker",
-      "description": "Simplify the deployment of everything you need to start containerized app development.",
+      "description": "The most amazing coffee you will ever have",
       "sourceUrl": "https://github.com/gitrey/community-templates/tree/main/solution/gke-accelerator",
       "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/gitrey/community-templates/main/solution/gke-accelerator/cloudprovision.json",
       "version": "1.0.0",
@@ -30,7 +31,8 @@
       ],
       "category": "solution",
       "lastModified": "2022-09-26T11:11:04.000Z",
-      "owner": "66degrees",
-      "email": "care@66degrees.com"
+      "owner": "Rob",
+      "email": "robedwards@google.com",
+      "draft": false
     }
   ]
