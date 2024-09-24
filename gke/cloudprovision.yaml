@@ -26,13 +26,13 @@
         "env": [
           "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
           "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
-          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT}",
-          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT}",
+          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
           "CREATE_BASTION=${_CREATE_BASTION}"
         ],
         "args": [
           "-c",
-          "cd gke/ && ./create.sh"
+          "cd workbench-demo/gke/ && ./create.sh"
         ]
       }
     ]
@@ -70,7 +70,7 @@
         ],
         "args": [
           "-c",
-          "cd gke/ && ./destroy.sh"
+          "cd workbench-demo/gke/ && ./destroy.sh"
         ]
       }
     ]
