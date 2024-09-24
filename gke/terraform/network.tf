@@ -80,7 +80,7 @@ module "gcp_network" {
 
 resource "google_compute_address" "default" {
   project      = var.google_cloud_k8s_project
-  name         = "${google_alloydb_instance.dev_instance.uid}-address"
+  name         = replace(google_alloydb_instance.dev_instance.uid, "-", "_") 
   region       = var.google_cloud_default_region
   subnetwork   = module.gcp_network.subnets_names[0]
   address_type = "INTERNAL"
