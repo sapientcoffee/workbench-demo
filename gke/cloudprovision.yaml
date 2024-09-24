@@ -1,0 +1,132 @@
+{
+  "create": {
+    "steps": [
+      {
+        "id": "Inspect Values",
+        "name": "ubuntu",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION} _GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT} _GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT} _CREATE_BASTION=${_CREATE_BASTION} _CREATE_BASTION=$(_CREATE_BASTION)"
+        ]
+      },
+      {
+        "id": "Clone repo",
+        "name": "gcr.io/cloud-builders/git",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"
+        ]
+      },
+      {
+        "id": "Create deployment with Infra Manager",
+        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
+        "entrypoint": "bash",
+        "env": [
+          "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
+          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT}",
+          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT}",
+          "CREATE_BASTION=${_CREATE_BASTION}"
+        ],
+        "args": [
+          "-c",
+          "cd gke/ && ./create.sh"
+        ]
+      }
+    ]
+  },
+  "destroy": {
+    "steps": [
+      {
+        "id": "Inspect Values",
+        "name": "ubuntu",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "echo _APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _REGION=${_REGION} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER} _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"
+        ]
+      },
+      {
+        "id": "Clone cp-templates",
+        "name": "gcr.io/cloud-builders/git",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"
+        ]
+      },
+      {
+        "id": "Delete Cloud Workstations with Infra Manager",
+        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
+        "entrypoint": "bash",
+        "env": [
+          "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
+          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "CREATE_BASTION=${_CREATE_BASTION}"
+        ],
+        "args": [
+          "-c",
+          "cd gke/ && ./destroy.sh"
+        ]
+      }
+    ]
+  },
+  "inputs": [
+    {
+      "param": "_GOOGLE_CLOUD_PROJECT",
+      "label": "Google Cloud Project",
+      "description": "Application that will be deployed.",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_GOOGLE_CLOUD_DEFAULT_REGION",
+      "label": "Cluster Region",
+      "description": "Where do you want to deploy the application?",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_CREATE_BASTION",
+      "label": "Bastion Host - true or false",
+      "description": "Where do you want to deploy the application?",
+      "type": "string",
+      "required": true
+    }
+    
+  ],
+  "outputs": [
+    {
+      "param": "_SERVICE_URL",
+      "label": "Service Url",
+      "description": "Service Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_TRIGGER_URL",
+      "label": "Cloud Build Trigger Url",
+      "description": "Cloud Build Trigger Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_REPO_URL",
+      "label": "Repo Url",
+      "description": "Repo Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_BUILD_URL",
+      "label": "Cloud Build Url",
+      "description": "Cloud Build Url",
+      "type": "string",
+      "required": true
+    }
+  ]
+}
