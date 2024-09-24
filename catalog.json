@@ -1,6 +1,21 @@
 [
-    {
-      "id": 100,
+  {
+    "id": 100,
+    "name": "Application Development environment and a GenAI app",
+    "description": "Deploy a Application Development environment and a GenAI app in less than 30 minutes!",
+    "sourceUrl": "https://github.com/sapientcoffee/workbench-demo/tree/main/gke",
+    "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/sapientcoffee/workbench-demo/refs/heads/main/cloudprovision.yaml",
+    "version": "0.0.1",
+    "tags": [
+    ],
+    "category": "solution",
+    "lastModified": "2022-09-28T11:11:04.000Z",
+    "owner": "Rob",
+    "email": "robedwards@google.com",
+    "draft": false
+  },  
+  {
+      "id": 101,
       "name": "GKE Autopilot Cluster",
       "description": "Autopilot is a new mode of operation in Google Kubernetes Engine (GKE).",
       "sourceUrl": "https://github.com/gitrey/community-templates/tree/main/solution/gke-autopilot-cluster",
@@ -15,7 +30,7 @@
       "draft": true
     },
     {
-      "id": 101,
+      "id": 102,
       "name": "Coffee Maker",
       "description": "The most amazing coffee you will ever have",
       "sourceUrl": "https://github.com/sapientcoffee/workbench-demo/tree/main/simple",
