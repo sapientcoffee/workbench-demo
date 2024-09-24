@@ -78,18 +78,25 @@ module "gcp_network" {
   ]
 }
 
+resource "random_id" "address_id" {
+  byte_length = 8
+}
 
 resource "google_compute_address" "default" {
   project      = var.google_cloud_k8s_project
-  name         = "alloydb-address-${replace(google_alloydb_instance.dev_instance.uid, "-", "_")}" 
+  name         = "address-${random_id.address_id.hex}"
   region       = var.google_cloud_default_region
   subnetwork   = module.gcp_network.subnets_names[0]
   address_type = "INTERNAL"
 }
 
+resource "random_id" "forwarding_rule_id" {
+  byte_length = 8
+}
+
 resource "google_compute_forwarding_rule" "default" {
   project                = var.google_cloud_k8s_project
-  name                  = "alloydb-forwarding-rule-${replace(google_alloydb_instance.dev_instance.uid, "-", "_")}"
+  name                  = "forwarding-rule-${random_id.forwarding_rule_id.hex}"
   region                 = var.google_cloud_default_region
   network                = module.gcp_network.network_name
   ip_address             = google_compute_address.default.self_link
