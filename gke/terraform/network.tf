@@ -78,22 +78,23 @@ module "gcp_network" {
   ]
 }
 
+
 resource "google_compute_address" "default" {
   project      = var.google_cloud_k8s_project
-  name         = replace(google_alloydb_instance.dev_instance.uid, "-", "_") 
+  name         = "alloydb-address-${replace(google_alloydb_instance.dev_instance.uid, "-", "_")}" 
   region       = var.google_cloud_default_region
   subnetwork   = module.gcp_network.subnets_names[0]
   address_type = "INTERNAL"
 }
 
 resource "google_compute_forwarding_rule" "default" {
-  project               = var.google_cloud_k8s_project
-  name                  = "${replace(google_alloydb_instance.dev_instance.uid, "-", "_")}-forwarding-rule"
-  region                = var.google_cloud_default_region
-  network               = module.gcp_network.network_name
-  ip_address            = google_compute_address.default.self_link
-  target                = google_alloydb_instance.dev_instance.psc_instance_config[0].service_attachment_link
-  load_balancing_scheme = ""
+  project                = var.google_cloud_k8s_project
+  name                  = "alloydb-forwarding-rule-${replace(google_alloydb_instance.dev_instance.uid, "-", "_")}"
+  region                 = var.google_cloud_default_region
+  network                = module.gcp_network.network_name
+  ip_address             = google_compute_address.default.self_link
+  target                 = google_alloydb_instance.dev_instance.psc_instance_config[0].service_attachment_link
+  load_balancing_scheme  = ""
 }
 
 resource "google_dns_managed_zone" "psc" {
