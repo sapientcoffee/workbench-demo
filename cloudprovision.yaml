@@ -1,0 +1,119 @@
+{
+  "create": {
+    "steps": [
+      {
+        "id": "clone solution repo",
+        "name": "gcr.io/cloud-builders/git",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "git clone -b feature/enable-cloud-provision https://github.com/gitrey/quota-monitoring-solution.git"
+        ]
+      },
+      {
+        "id": "replace tf vars",
+        "name": "ubuntu",
+        "entrypoint": "bash",
+        "env": [
+          "PROJECT_ID=$PROJECT_ID",
+          "_APP_ID=$_APP_ID",
+          "_APP_NAME=$_APP_NAME",
+          "_REGION=$_REGION",
+          "_SERVICE_ACCOUNT=$_SERVICE_ACCOUNT",
+          "_BUCKET_NAME=$_BUCKET_NAME",
+          "_NOTIFICATION_EMAIL=$_NOTIFICATION_EMAIL",
+          "_THRESHOLD=$_THRESHOLD"
+        ],
+        "args": [
+          "-c",
+          "sed -i s/PROJECT_ID/$PROJECT_ID/g quota-monitoring-solution/terraform/example/terraform.tfvars"
+        ]
+      },
+      {
+        "id": "tf init",
+        "name": "hashicorp/terraform:1.0.0",
+        "entrypoint": "sh",
+        "args": [
+          "-c",
+          "cd quota-monitoring-solution/terraform/example && terraform init"
+        ]
+      }
+    ]
+  },
+  "destroy": {
+    "steps": [
+      {
+        "id": "clone templates",
+        "name": "gcr.io/cloud-builders/git",
+        "entrypoint": "bash",
+        "args": [
+          "-c",
+          "git clone -b feature/enable-cloud-provision https://github.com/gitrey/quota-monitoring-solution.git"
+        ]
+      },
+      {
+        "id": "tf destroy",
+        "name": "hashicorp/terraform:1.0.0",
+        "entrypoint": "sh",
+        "args": [
+          "-c",
+          "echo \"cd quota-monitoring-solution/terraform/example && terraform destroy\""
+        ]
+      }
+    ]
+  },
+  "inputs": [
+    {
+      "param": "_GOOGLE_BOOTSTRAP_CLOUD_PROJECT",
+      "label": "Bootstrap Project ID",
+      "description": "The Google Cloud Project ID that holds bootstrap resources",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_GOOGLE_CLOUD_DEFAULT_REGION",
+      "label": "Region",
+      "description": "The region to use",
+      "type": "string",
+      "required": false
+    },
+    {
+      "param": "_FOLDER_ID",
+      "label": "Folder ID",
+      "description": "The folder in the organization heirarchy to place the AppDev project",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_BILLING_ACCOUNT",
+      "label": "Billing Account",
+      "description": "The AppDev Billing Account provied by Google to enable the discounted Bundle",
+      "type": "string",
+      "required": true
+    }
+  ],
+  "outputs": [
+
+    {
+      "param": "_TRIGGER_URL",
+      "label": "Cloud Build Trigger Url",
+      "description": "Cloud Build Trigger Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_REPO_URL",
+      "label": "Repo Url",
+      "description": "Repo Url",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_BUILD_URL",
+      "label": "Cloud Build Url",
+      "description": "Cloud Build Url",
+      "type": "string",
+      "required": true
+    }
+  ]
+}
