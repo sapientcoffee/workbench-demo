@@ -19,8 +19,7 @@ echo $SERVICE_ACCOUNT
 
 
 echo "Creating the project ${_GOOGLE_CLOUD_PROJECT}"
-gcloud projects create ${_GOOGLE_CLOUD_PROJECT} \
-    --no-network
+gcloud projects create ${_GOOGLE_CLOUD_PROJECT}
 
 echo "Linking the billing account"
 gcloud billing projects link ${_GOOGLE_CLOUD_PROJECT} \
@@ -39,7 +38,7 @@ gcloud services enable \
   cloudaicompanion.googleapis.com \
   dataform.googleapis.com \
   aiplatform.googleapis.com \
-  --project "${_GOOGLE_CLOUD_PROJECT}
+  --project ${_GOOGLE_CLOUD_PROJECT}
 
 
 # Region for Infra Manager is hard-coded to us-central1
