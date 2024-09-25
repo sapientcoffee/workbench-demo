@@ -19,12 +19,15 @@
 echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION} _GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT} _GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT} _CREATE_BASTION=${_CREATE_BASTION} _BILLING_ACCOUNT=$(_BILLING_ACCOUNT) _FOLDER_ID=$(_FOLDER_ID)
 
 echo "Creating the project ${_GOOGLE_CLOUD_PROJECT}"
-gcloud projects create ${_GOOGLE_CLOUD_PROJECT}
+# gcloud projects create ${_GOOGLE_CLOUD_PROJECT}
+gcloud projects create CoffeeDev-001
 
 echo "Linking the billing account"
 ehco "debuging entry: new project is ${_GOOGLE_CLOUD_PROJECT} and billing is ${_BILLING_ACCOUNT}"
-gcloud billing projects link ${_GOOGLE_CLOUD_PROJECT} \
-    --billing-account ${_BILLING_ACCOUNT}
+# gcloud billing projects link ${_GOOGLE_CLOUD_PROJECT} \
+#     --billing-account ${_BILLING_ACCOUNT}
+gcloud billing projects link CoffeeDev-001 \
+    --billing-account 017C65-6AC5ED-18E460
 
 echo "Enabling services"
 gcloud services enable \
@@ -39,7 +42,7 @@ gcloud services enable \
   cloudaicompanion.googleapis.com \
   dataform.googleapis.com \
   aiplatform.googleapis.com \
-  --project ${_GOOGLE_CLOUD_PROJECT}
+  --project CoffeeDev-001
 
 
 # Region for Infra Manager is hard-coded to us-central1
@@ -55,4 +58,4 @@ gcloud infra-manager deployments apply projects/coffeebench/locations/us-central
     --git-source-repo=https://github.com/sapientcoffee/workbench-demo \
     --git-source-directory=gke/terraform \
     --git-source-ref=main \
-    --input-values=google_cloud_project="quickbuild-workbench",google_cloud_default_region="us-central1",google_cloud_db_project="quickbuild-workbench",google_cloud_k8s_project=quickbuild-workbench,create_bastion=false
+    --input-values=google_cloud_project="CoffeeDev-001",google_cloud_default_region="us-central1",google_cloud_db_project="CoffeeDev-001",google_cloud_k8s_project=CoffeeDev-001,create_bastion=false
