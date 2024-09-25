@@ -20,8 +20,27 @@ echo $SERVICE_ACCOUNT
 
 echo "Creating the project ${_GOOGLE_CLOUD_PROJECT}"
 gcloud projects create ${_GOOGLE_CLOUD_PROJECT} \
-    --billing-account ${BILLING_ACCOUNT} \
     --no-network
+
+echo "Linking the billing account"
+gcloud billing projects link ${_GOOGLE_CLOUD_PROJECT} \
+    --billing-account ${BILLING_ACCOUNT}
+
+echo "Enabling services"
+gcloud services enable \
+  storage.googleapis.com \
+  sqladmin.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  container.googleapis.com \
+  dns.googleapis.com \
+  compute.googleapis.com \
+  alloydb.googleapis.com \
+  cloudaicompanion.googleapis.com \
+  dataform.googleapis.com \
+  aiplatform.googleapis.com \
+  --project "${_GOOGLE_CLOUD_PROJECT}
+
 
 # Region for Infra Manager is hard-coded to us-central1
 # gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-central1/deployments/${APP_ID} \
