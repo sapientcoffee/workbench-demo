@@ -7,7 +7,7 @@
         "entrypoint": "bash",
         "args": [
           "-c",
-          "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION} _GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT} _GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT} _CREATE_BASTION=${_CREATE_BASTION} _CREATE_BASTION=$(_CREATE_BASTION)"
+          "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION} _GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT} _GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT} _CREATE_BASTION=${_CREATE_BASTION} _BILLING_ACCOUNT=$(_BILLING_ACCOUNT) _FOLDER_ID=$(_FOLDER_ID)"
         ]
       },
       {
@@ -104,6 +104,20 @@
       "param": "_GOOGLE_CLOUD_DEFAULT_REGION",
       "label": "Cluster Region",
       "description": "Where do you want to deploy the application?",
+      "type": "string",
+      "required": true
+    },
+     {
+      "param": "_BILLING_ACCOUNT",
+      "label": "Google Cloud Billing Account",
+      "description": "Billing account",
+      "type": "string",
+      "required": true
+    },
+    {
+      "param": "_FOLDER_ID",
+      "label": "Google Cloud Folder",
+      "description": "Folder in the Google Cloud Organization to create project.",
       "type": "string",
       "required": true
     },
