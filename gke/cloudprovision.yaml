@@ -22,6 +22,23 @@
       {
         "id": "Create deployment with Infra Manager",
         "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
+        "entrypoint": "gcloud projects create ${_GOOGLE_CLOUD_PROJECT}",
+        "env": [
+          "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
+          "FOLDER_ID=${_FOLDER_ID}",
+          "BILLING_ACCOUNT=${_BILLING_ACCOUNT}",
+        ],
+        "args": [
+          "--name ${PROJECT_SUFFIX}",
+          "--folder ${FOLDER_ID}",
+          "--billing-account ${BILLING_ACCOUNT}",
+          "--no-network"
+        ]
+      },
+      {
+        "id": "Create deployment with Infra Manager",
+        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
         "entrypoint": "bash",
         "env": [
           "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",

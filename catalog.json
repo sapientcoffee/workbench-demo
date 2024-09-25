@@ -1,15 +1,19 @@
 [
   {
     "id": 100,
-    "name": "Application Development environment and a GenAI app",
+    "name": "Develop a GenAI app",
     "description": "Deploy a Application Development environment and a GenAI app in less than 30 minutes!",
     "sourceUrl": "https://github.com/sapientcoffee/workbench-demo/tree/main/gke",
     "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/sapientcoffee/workbench-demo/refs/heads/main/gke/cloudprovision.yaml",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "tags": [
+      "firestore",
+      "gke",
+      "workstations",
+      "workspace"
     ],
     "category": "solution",
-    "lastModified": "2022-09-28T11:11:04.000Z",
+    "lastModified": "2024-09-25T11:11:04.000Z",
     "owner": "Rob",
     "email": "robedwards@google.com",
     "draft": false
