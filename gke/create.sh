@@ -12,18 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
-export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
+# export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
+# export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
 
-echo $SERVICE_ACCOUNT
-
+# echo $SERVICE_ACCOUNT
+echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION} _GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT} _GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT} _CREATE_BASTION=${_CREATE_BASTION} _BILLING_ACCOUNT=$(_BILLING_ACCOUNT) _FOLDER_ID=$(_FOLDER_ID)
 
 echo "Creating the project ${_GOOGLE_CLOUD_PROJECT}"
 gcloud projects create ${_GOOGLE_CLOUD_PROJECT}
 
 echo "Linking the billing account"
+ehco "debuging entry: new project is ${_GOOGLE_CLOUD_PROJECT} and billing is ${_BILLING_ACCOUNT}"
 gcloud billing projects link ${_GOOGLE_CLOUD_PROJECT} \
-    --billing-account ${BILLING_ACCOUNT}
+    --billing-account ${_BILLING_ACCOUNT}
 
 echo "Enabling services"
 gcloud services enable \
