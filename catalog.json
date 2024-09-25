@@ -5,7 +5,7 @@
     "description": "Deploy a Application Development environment and a GenAI app in less than 30 minutes!",
     "sourceUrl": "https://github.com/sapientcoffee/workbench-demo/tree/main/gke",
     "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/sapientcoffee/workbench-demo/refs/heads/main/gke/cloudprovision.yaml",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "tags": [
       "firestore",
       "gke",
