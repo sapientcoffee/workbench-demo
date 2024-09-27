@@ -56,7 +56,7 @@ inputs:
   description: GCP API Key
   type: string
   required: false
-  display: false
+  display: true
 outputs:
 - param: _BUILD_URL
   label: Cloud Build Url
