@@ -12,7 +12,7 @@ create:
     args: ["-c",
           "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"]
   - id: Create deployment with Infra Manager
-    name: ubuntu
+    name: gcr.io/cloud-builders/gcloud
     env:
     - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     - GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}
