@@ -41,6 +41,42 @@ create:
     - TEMPLATE_FOLDER=workbench-demo/gke
     - API_KEY=${_API_KEY}
     script: "./utils/createApp.sh"
+  - id: createGitWebhook - chatbot-api
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - PROJECT_ID=$PROJECT_ID
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GIT_USER=${_INSTANCE_GIT_REPO_OWNER}
+    - GIT_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - REGION=${_REGION}
+    - TEMPLATE_FOLDER=workbench-demo/gke/chatbot-api
+    - API_KEY=${_API_KEY}
+    script: "./utils/createWebhook.sh"
+  - id: createGitWebhook - init-db
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - PROJECT_ID=$PROJECT_ID
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GIT_USER=${_INSTANCE_GIT_REPO_OWNER}
+    - GIT_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - REGION=${_REGION}
+    - TEMPLATE_FOLDER=workbench-demo/gke/init-db
+    - API_KEY=${_API_KEY}
+    script: "./utils/createWebhook.sh"
+  - id: createGitWebhook - load-embeddings
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - PROJECT_ID=$PROJECT_ID
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GIT_USER=${_INSTANCE_GIT_REPO_OWNER}
+    - GIT_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - REGION=${_REGION}
+    - TEMPLATE_FOLDER=workbench-demo/gke/load-embeddings
+    - API_KEY=${_API_KEY}
+    script: "./utils/createWebhook.sh"
 destroy:
   steps:
   - id: Inspect Values
