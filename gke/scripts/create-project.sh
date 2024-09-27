@@ -43,19 +43,19 @@ echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BI
 
 
 echo "Enabling services in ${GOOGLE_CLOUD_PROJECT}"
-gcloud services enable \
-  storage.googleapis.com \
-  sqladmin.googleapis.com \
-  artifactregistry.googleapis.com \
-  cloudbuild.googleapis.com \
-  container.googleapis.com \
-  dns.googleapis.com \
-  compute.googleapis.com \
-  alloydb.googleapis.com \
-  cloudaicompanion.googleapis.com \
-  dataform.googleapis.com \
-  aiplatform.googleapis.com \
-  --project=${GOOGLE_CLOUD_PROJECT}
+# gcloud services enable \
+#   storage.googleapis.com \
+#   sqladmin.googleapis.com \
+#   artifactregistry.googleapis.com \
+#   cloudbuild.googleapis.com \
+#   container.googleapis.com \
+#   dns.googleapis.com \
+#   compute.googleapis.com \
+#   alloydb.googleapis.com \
+#   cloudaicompanion.googleapis.com \
+#   dataform.googleapis.com \
+#   aiplatform.googleapis.com \
+#   --project=${GOOGLE_CLOUD_PROJECT}
 
 # Add Service Account
 # gcloud projects add-iam-policy-binding coffeedev-002 \
