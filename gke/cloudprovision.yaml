@@ -1,34 +1,120 @@
-{
-  "create": {
-    "steps": [
-      {
-        "id": "Inspect Values",
-        "name": "ubuntu",
-        "entrypoint": "bash",
-        "args": [
-          "-c",
-          "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION} _GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_DB_PROJECT} _GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_K8S_PROJECT} _CREATE_BASTION=${_CREATE_BASTION} _BILLING_ACCOUNT=$(_BILLING_ACCOUNT) _FOLDER_ID=$(_FOLDER_ID)"
-        ]
-      },
-      {
-        "id": "Clone repo",
-        "name": "gcr.io/cloud-builders/git",
-        "entrypoint": "bash",
-        "args": [
-          "-c",
-          "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"
-        ]
-      },
-      # {
-      #   "id": "Create Project",
-      #   "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
-      #   "entrypoint": "gcloud",
-      #   "env": [
-      #     "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-      #     "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
-      #     "FOLDER_ID=${_FOLDER_ID}",
-      #     "BILLING_ACCOUNT=${_BILLING_ACCOUNT}",
-      #   ],
+create:
+  steps:
+  - id: Inspect Values
+    name: ubuntu
+    entrypoint: bash
+    args: ["-c",
+      "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      _CREATE_BASTION=${_CREATE_BASTION} "]
+  - id: clone AppDev
+    name: gcr.io/cloud-builders/git
+    entrypoint: bash
+    args: ["-c",
+          "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"]
+
+  - id: Create deployment with Infra Manager
+    name: ubuntu
+    env:
+    - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}
+    - FOLDER_ID=${_FOLDER_ID}
+    - BILLING_ACCOUNT=${_BILLING_ACCOUNT}
+    - CREATE_BASTION=${_CREATE_BASTION}
+    - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    script: "cd workbench-demo/gke/ && ./create.sh"
+destroy:
+  steps:
+  - id: Inspect Values
+    name: ubuntu
+    entrypoint: bash
+    args: ["-c",
+          "echo _APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _REGION=${_REGION} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}",
+          "_INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"]
+  - id: Delete git repo
+    name: curlimages/curl
+    args: ["-L",
+      "-X",
+      "DELETE",
+      "-H",
+      "Accept: application/vnd.github+json",
+      "-H",
+      "Authorization: Bearer ${_INSTANCE_GIT_REPO_TOKEN}",
+      "-H",
+      "X-GitHub-Api-Version: 2022-11-28",
+      "https://api.github.com/repos/${_INSTANCE_GIT_REPO_OWNER}/${_APP_ID}"]
+  - id: Delete cloud build trigger
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args: ["alpha",
+      "builds",
+      "triggers",
+      "delete",
+      "${_APP_ID}-webhook-trigger",
+      "--quiet"]
+  - id: Delete cloud run service
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args: ["run",
+      "services",
+      "delete",
+      "${_APP_ID}",
+      "--region",
+      "${_REGION}",
+      "--quiet"] 
+inputs:
+- param: _GOOGLE_CLOUD_PROJECT
+  label: Google Cloud Project
+  description: Application that will be deployed.
+  type: string
+  required: true
+- param: _GOOGLE_CLOUD_DEFAULT_REGION
+  label: Application Region
+  description: Where do you want to deploy the application?
+  type: string
+  required: true
+- param: _BILLING_ACCOUNT
+  label: Google Cloud Billing Account
+  description: Instance GitHub Repository Owner
+  type: dropdown
+  required: true
+- param: _FOLDER_ID
+  label: Google Cloud Folder
+  description: Instance GitHub Repository Token
+  type: string
+  required: true
+  display: false
+- param: _CREATE_BASTION
+  label: Bastion Host - true or false
+  description: GCP API Key
+  type: string
+  required: true
+  display: false
+outputs:
+- param: _SERVICE_URL
+  label: Service Url
+  description: Service Url
+  type: string
+  required: true
+- param: _TRIGGER_URL
+  label: Cloud Build Trigger Url
+  description: Cloud Build Trigger Url
+  type: string
+  required: true
+- param: _REPO_URL
+  label: Repo Url
+  description: Repo Url
+  type: string
+  required: true
+- param: _BUILD_URL
+  label: Cloud Build Url
+  description: Cloud Build Url
+  type: string
+  required: true
+
+
+      
+
       #   "args": [
       #     "projects", 
       #     "create", 
@@ -55,6 +141,26 @@
         "args": [
           "-c",
           "cd workbench-demo/gke/ && ./create.sh"
+        ]
+      },
+      {
+        "id": "imge createion",
+        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
+        "entrypoint": "gcloud",
+        "env": [
+          "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
+          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
+          "BILLING_ACCOUNT=${_BILLING_ACCOUNT}",
+          "FOLDER_ID=${_FOLDER_ID}",
+          "CREATE_BASTION=${_CREATE_BASTION}"
+        ],
+        "args": [
+          "builds",
+          "submit",
+          "--config=cloudbuild.yaml",
+          "--region=`${_GOOGLE_CLOUD_DEFAULT_REGION}`",
         ]
       }
     ]
@@ -97,72 +203,3 @@
       }
     ]
   },
-  "inputs": [
-    {
-      "param": "_GOOGLE_CLOUD_PROJECT",
-      "label": "Google Cloud Project",
-      "description": "Application that will be deployed.",
-      "type": "string",
-      "required": true
-    },
-    {
-      "param": "_GOOGLE_CLOUD_DEFAULT_REGION",
-      "label": "Cluster Region",
-      "description": "Where do you want to deploy the application?",
-      "type": "string",
-      "required": true
-    },
-     {
-      "param": "_BILLING_ACCOUNT",
-      "label": "Google Cloud Billing Account",
-      "description": "Billing account",
-      "type": "string",
-      "required": true
-    },
-    {
-      "param": "_FOLDER_ID",
-      "label": "Google Cloud Folder",
-      "description": "Folder in the Google Cloud Organization to create project.",
-      "type": "string",
-      "required": true
-    },
-    {
-      "param": "_CREATE_BASTION",
-      "label": "Bastion Host - true or false",
-      "description": "Where do you want to deploy the application?",
-      "type": "string",
-      "required": true
-    }
-    
-  ],
-  "outputs": [
-    {
-      "param": "_SERVICE_URL",
-      "label": "Service Url",
-      "description": "Service Url",
-      "type": "string",
-      "required": true
-    },
-    {
-      "param": "_TRIGGER_URL",
-      "label": "Cloud Build Trigger Url",
-      "description": "Cloud Build Trigger Url",
-      "type": "string",
-      "required": true
-    },
-    {
-      "param": "_REPO_URL",
-      "label": "Repo Url",
-      "description": "Repo Url",
-      "type": "string",
-      "required": true
-    },
-    {
-      "param": "_BUILD_URL",
-      "label": "Cloud Build Url",
-      "description": "Cloud Build Url",
-      "type": "string",
-      "required": true
-    }
-  ]
-}

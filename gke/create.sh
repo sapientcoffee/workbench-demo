@@ -12,23 +12,37 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
-export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
+set -e # bail out early if any command fails
+set -u # fail if we hit unset variables
+set -o pipefail # fail if any component of any pipe fails
 
-echo $SERVICE_ACCOUNT
+export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
+# export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
+
+# echo $SERVICE_ACCOUNT
 
 echo "Creating the project ${GOOGLE_CLOUD_PROJECT}"
 # gcloud projects create ${_GOOGLE_CLOUD_PROJECT}
-gcloud projects create CoffeeDev-001
+# gcloud projects create coffeedev-002
 
 echo "Linking the billing account"
-ehco "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
+echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
 # gcloud billing projects link ${_GOOGLE_CLOUD_PROJECT} \
 #     --billing-account ${_BILLING_ACCOUNT}
-gcloud billing projects link CoffeeDev-001 \
-    --billing-account 017C65-6AC5ED-18E460
+# gcloud billing projects link coffeedev-002 \
+#     --billing-account 017C65-6AC5ED-18E460
 
-echo "Enabling services"
+
+# gcloud iam service-accounts create cloud-build-sa \
+#   --display-name "Cloud Build Service Account" \
+#   --project coffeedev-002
+
+# gcloud projects add-iam-policy-binding coffeedev-002 \
+#   --member "serviceAccount:cloud-build-sa@coffeedev-002.iam.gserviceaccount.com" \
+#   --role "roles/cloudbuild.serviceAgent"
+
+
+echo "Enabling services in ${GOOGLE_CLOUD_PROJECT}"
 gcloud services enable \
   storage.googleapis.com \
   sqladmin.googleapis.com \
@@ -41,7 +55,25 @@ gcloud services enable \
   cloudaicompanion.googleapis.com \
   dataform.googleapis.com \
   aiplatform.googleapis.com \
-  --project CoffeeDev-001
+  --project=coffeedev-002
+
+# Add Service Account
+# gcloud projects add-iam-policy-binding coffeedev-002 \
+#   --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+#   --role="roles/viewer" \
+#   --role="roles/compute.networkAdmin" \
+#   --role="roles/resourcemanager.projectAgent" \
+#   --role="roles/billing.projectManager" \
+#   --role="roles/serviceusage.consumer" \
+#   --role="roles/storage.admin" \
+#   --role="roles/storage.objectCreator" \
+#   --role="roles/compute.securityAdmin" \
+#   --role="roles/iam.serviceAccountAdmin" \
+#   --role="roles/alloydb.admin" \
+#   --role="roles/dns.admin" \
+#   --role="roles/artifactregistry.admin" 
+
+
 
 
 # Region for Infra Manager is hard-coded to us-central1
@@ -57,4 +89,13 @@ gcloud infra-manager deployments apply projects/coffeebench/locations/us-central
     --git-source-repo=https://github.com/sapientcoffee/workbench-demo \
     --git-source-directory=gke/terraform \
     --git-source-ref=main \
-    --input-values=google_cloud_project="CoffeeDev-001",google_cloud_default_region="us-central1",google_cloud_db_project="CoffeeDev-001",google_cloud_k8s_project=CoffeeDev-001,create_bastion=false
+    --input-values=google_cloud_project="coffeedev-002",google_cloud_default_region="us-central1",google_cloud_db_project="coffeedev-002",google_cloud_k8s_project=coffeedev-002,create_bastion=false
+
+
+
+# cd run/init-db
+
+# gcloud builds submit --config cloudbuild.yaml --region <YOUR_CHOSEN_REGION>
+
+
+
