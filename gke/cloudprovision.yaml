@@ -7,11 +7,16 @@ create:
       "echo APP_ID=${_APP_ID} _APP_NAME='${_APP_NAME}' _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION}_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}
       _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"]
-  - id: clone AppDev
+  - id: clone App Bundle
     name: gcr.io/cloud-builders/git
     entrypoint: bash
     args: ["-c",
           "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"]
+  - id: clone cp-utils
+    name: gcr.io/cloud-builders/git
+    entrypoint: bash
+    args: ["-c",
+      "git clone -b main https://github.com/cgrant/cp-utils.git utils"]
   - id: Create deployment with Infra Manager
     name: gcr.io/cloud-builders/gcloud
     env:
