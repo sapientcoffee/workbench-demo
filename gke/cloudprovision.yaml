@@ -69,12 +69,14 @@ inputs:
   label: Google Cloud Billing Account
   description: Instance GitHub Repository Owner
   type: string
-  required: true
+  required: false
+  display: false
 - param: _FOLDER_ID
   label: Google Cloud Folder
   description: Instance GitHub Repository Token
   type: string
-  required: true
+  required: false
+  display: false
 - param: _CREATE_BASTION
   label: Bastion Host - true or false
   description: GCP API Key
