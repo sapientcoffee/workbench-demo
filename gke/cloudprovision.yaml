@@ -4,7 +4,7 @@ create:
     name: ubuntu
     entrypoint: bash
     args: ["-c",
-      "echo APP_ID=${_APP_ID} _APP_NAME='${_APP_NAME}' _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      "echo APP_ID=${_APP_ID} _APP_NAME='${_APP_NAME}' _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION} "]
   - id: clone AppDev
     name: gcr.io/cloud-builders/git
@@ -17,7 +17,7 @@ create:
     - APP_ID=${_APP_ID}
     - APP_NAME=${_APP_NAME}
     - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
-    - GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}
+    - GOOGLE_CLOUD_DEFAULT_REGION=${_REGION}
     - FOLDER_ID=${_FOLDER_ID}
     - BILLING_ACCOUNT=${_BILLING_ACCOUNT}
     - CREATE_BASTION=${_CREATE_BASTION}
@@ -30,7 +30,7 @@ destroy:
     name: ubuntu
     entrypoint: bash
     args: ["-c",
-      "echo APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      "echo APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION} "]
 inputs:
 - param: _APP_NAME
@@ -43,7 +43,7 @@ inputs:
   description: Application that will be deployed.
   type: string
   required: true
-- param: _GOOGLE_CLOUD_DEFAULT_REGION
+- param: _REGION
   label: Application Region
   description: Where do you want to deploy the application?
   type: string
