@@ -4,7 +4,7 @@ create:
     name: ubuntu
     entrypoint: bash
     args: ["-c",
-      "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      "echo APP_ID=${_APP_ID} _APP_NAME='${_APP_NAME}' _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION} "]
   - id: clone AppDev
     name: gcr.io/cloud-builders/git
@@ -14,6 +14,8 @@ create:
   - id: Create deployment with Infra Manager
     name: gcr.io/cloud-builders/gcloud
     env:
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
     - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     - GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}
     - FOLDER_ID=${_FOLDER_ID}
@@ -28,9 +30,14 @@ destroy:
     name: ubuntu
     entrypoint: bash
     args: ["-c",
-      "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      "echo APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION} "]
 inputs:
+- param: _APP_NAME
+  label: Application Name
+  description: Application that will be deployed.
+  type: string
+  required: true
 - param: _GOOGLE_CLOUD_PROJECT
   label: Google Cloud Project
   description: Application that will be deployed.
