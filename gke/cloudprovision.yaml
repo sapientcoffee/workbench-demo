@@ -11,7 +11,6 @@ create:
     entrypoint: bash
     args: ["-c",
           "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"]
-
   - id: Create deployment with Infra Manager
     name: ubuntu
     env:
@@ -76,19 +75,18 @@ inputs:
 - param: _BILLING_ACCOUNT
   label: Google Cloud Billing Account
   description: Instance GitHub Repository Owner
-  type: dropdown
+  type: string
   required: true
 - param: _FOLDER_ID
   label: Google Cloud Folder
   description: Instance GitHub Repository Token
   type: string
   required: true
-  display: false
 - param: _CREATE_BASTION
   label: Bastion Host - true or false
   description: GCP API Key
   type: string
-  required: true
+  required: false
   display: false
 outputs:
 - param: _SERVICE_URL
@@ -111,95 +109,3 @@ outputs:
   description: Cloud Build Url
   type: string
   required: true
-
-
-      
-
-      #   "args": [
-      #     "projects", 
-      #     "create", 
-      #     "${_GOOGLE_CLOUD_PROJECT}",
-      #     "--name=${PROJECT_SUFFIX}",
-      #     "--folder=${FOLDER_ID}",
-      #     "--billing-account=${BILLING_ACCOUNT}",
-      #     "--no-network"
-      #   ]
-      # },
-      {
-        "id": "Create deployment with Infra Manager",
-        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
-        "entrypoint": "bash",
-        "env": [
-          "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
-          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "BILLING_ACCOUNT=${_BILLING_ACCOUNT}",
-          "FOLDER_ID=${_FOLDER_ID}",
-          "CREATE_BASTION=${_CREATE_BASTION}"
-        ],
-        "args": [
-          "-c",
-          "cd workbench-demo/gke/ && ./create.sh"
-        ]
-      },
-      {
-        "id": "imge createion",
-        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
-        "entrypoint": "gcloud",
-        "env": [
-          "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
-          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "BILLING_ACCOUNT=${_BILLING_ACCOUNT}",
-          "FOLDER_ID=${_FOLDER_ID}",
-          "CREATE_BASTION=${_CREATE_BASTION}"
-        ],
-        "args": [
-          "builds",
-          "submit",
-          "--config=cloudbuild.yaml",
-          "--region=`${_GOOGLE_CLOUD_DEFAULT_REGION}`",
-        ]
-      }
-    ]
-  },
-  "destroy": {
-    "steps": [
-      {
-        "id": "Inspect Values",
-        "name": "ubuntu",
-        "entrypoint": "bash",
-        "args": [
-          "-c",
-          "echo _APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _REGION=${_REGION} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER} _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"
-        ]
-      },
-      {
-        "id": "Clone cp-templates",
-        "name": "gcr.io/cloud-builders/git",
-        "entrypoint": "bash",
-        "args": [
-          "-c",
-          "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"
-        ]
-      },
-      {
-        "id": "Delete Cloud Workstations with Infra Manager",
-        "name": "gcr.io/google.com/cloudsdktool/cloud-sdk",
-        "entrypoint": "bash",
-        "env": [
-          "GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "GOOGLE_CLOUD_DEFAULT_REGION=${_GOOGLE_CLOUD_DEFAULT_REGION}",
-          "GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}",
-          "CREATE_BASTION=${_CREATE_BASTION}"
-        ],
-        "args": [
-          "-c",
-          "cd workbench-demo/gke/ && ./destroy.sh"
-        ]
-      }
-    ]
-  },
