@@ -28,39 +28,8 @@ destroy:
     name: ubuntu
     entrypoint: bash
     args: ["-c",
-          "echo _APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _REGION=${_REGION} _INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}",
-          "_INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"]
-  - id: Delete git repo
-    name: curlimages/curl
-    args: ["-L",
-      "-X",
-      "DELETE",
-      "-H",
-      "Accept: application/vnd.github+json",
-      "-H",
-      "Authorization: Bearer ${_INSTANCE_GIT_REPO_TOKEN}",
-      "-H",
-      "X-GitHub-Api-Version: 2022-11-28",
-      "https://api.github.com/repos/${_INSTANCE_GIT_REPO_OWNER}/${_APP_ID}"]
-  - id: Delete cloud build trigger
-    name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    entrypoint: gcloud
-    args: ["alpha",
-      "builds",
-      "triggers",
-      "delete",
-      "${_APP_ID}-webhook-trigger",
-      "--quiet"]
-  - id: Delete cloud run service
-    name: gcr.io/google.com/cloudsdktool/cloud-sdk
-    entrypoint: gcloud
-    args: ["run",
-      "services",
-      "delete",
-      "${_APP_ID}",
-      "--region",
-      "${_REGION}",
-      "--quiet"] 
+      "echo _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_GOOGLE_CLOUD_DEFAULT_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      _CREATE_BASTION=${_CREATE_BASTION} "]
 inputs:
 - param: _GOOGLE_CLOUD_PROJECT
   label: Google Cloud Project
@@ -89,21 +58,6 @@ inputs:
   required: false
   display: false
 outputs:
-- param: _SERVICE_URL
-  label: Service Url
-  description: Service Url
-  type: string
-  required: true
-- param: _TRIGGER_URL
-  label: Cloud Build Trigger Url
-  description: Cloud Build Trigger Url
-  type: string
-  required: true
-- param: _REPO_URL
-  label: Repo Url
-  description: Repo Url
-  type: string
-  required: true
 - param: _BUILD_URL
   label: Cloud Build Url
   description: Cloud Build Url
