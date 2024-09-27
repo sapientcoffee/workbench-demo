@@ -5,7 +5,8 @@ create:
     entrypoint: bash
     args: ["-c",
       "echo APP_ID=${_APP_ID} _APP_NAME='${_APP_NAME}' _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
-      _CREATE_BASTION=${_CREATE_BASTION} "]
+      _CREATE_BASTION=${_CREATE_BASTION}_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}
+      _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"]
   - id: clone AppDev
     name: gcr.io/cloud-builders/git
     entrypoint: bash
@@ -24,6 +25,17 @@ create:
     - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     script: "cd workbench-demo/gke/ && ./create.sh"
+  - id: createApp
+    name: ubuntu
+    env:
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - REGION=${_REGION}
+    - INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}
+    - TEMPLATE_FOLDER=workbench-demo/gke
+    - API_KEY=${_API_KEY}
+    script: "./utils/createApp.sh"
 destroy:
   steps:
   - id: Inspect Values
@@ -64,6 +76,23 @@ inputs:
   type: string
   required: false
   display: true
+- param: _INSTANCE_GIT_REPO_OWNER
+  label: Instance GitHub Repository Owner
+  description: Instance GitHub Repository Owner
+  type: dropdown
+  required: true
+- param: _INSTANCE_GIT_REPO_TOKEN
+  label: Instance GitHub Repository Token
+  description: Instance GitHub Repository Token
+  type: string
+  required: true
+  display: false
+- param: _API_KEY
+  label: GCP API Key
+  description: GCP API Key
+  type: string
+  required: true
+  display: false
 outputs:
 - param: _BUILD_URL
   label: Cloud Build Url
