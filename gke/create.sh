@@ -27,7 +27,7 @@ echo "Creating the project ${GOOGLE_CLOUD_PROJECT}"
 
 echo "Linking the billing account"
 echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
-# gcloud billing projects link ${_GOOGLE_CLOUD_PROJECT} \
+# gcloud billing projects link ${GOOGLE_CLOUD_PROJECT} \
 #     --billing-account ${_BILLING_ACCOUNT}
 # gcloud billing projects link coffeedev-002 \
 #     --billing-account 017C65-6AC5ED-18E460
@@ -55,7 +55,7 @@ gcloud services enable \
   cloudaicompanion.googleapis.com \
   dataform.googleapis.com \
   aiplatform.googleapis.com \
-  --project=coffeedev-002
+  --project=${GOOGLE_CLOUD_PROJECT}
 
 # Add Service Account
 # gcloud projects add-iam-policy-binding coffeedev-002 \
@@ -73,9 +73,6 @@ gcloud services enable \
 #   --role="roles/dns.admin" \
 #   --role="roles/artifactregistry.admin" 
 
-
-
-
 # Region for Infra Manager is hard-coded to us-central1
 # gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-central1/deployments/${APP_ID} \
 #      --service-account=projects/${PROJECT_ID}/serviceAccounts/${SERVICE_ACCOUNT} \
@@ -84,17 +81,14 @@ gcloud services enable \
 
 
 echo "Initiating the deployment"
-gcloud infra-manager deployments apply projects/coffeebench/locations/us-central1/deployments/workbench-deployment \
-    --service-account projects/coffeebench/serviceAccounts/infra-manager@coffeebench.iam.gserviceaccount.com \
+gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-central1/deployments/workbench-deployment \
+    --service-account projects/${PROJECT_ID}/serviceAccounts/infra-manager@${PROJECT_ID}.iam.gserviceaccount.com \
     --git-source-repo=https://github.com/sapientcoffee/workbench-demo \
     --git-source-directory=gke/terraform \
     --git-source-ref=main \
-    --input-values=google_cloud_project="coffeedev-002",google_cloud_default_region="us-central1",google_cloud_db_project="coffeedev-002",google_cloud_k8s_project=coffeedev-002,create_bastion=false
-
-
+    --input-values=google_cloud_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_default_region="${GOOGLE_CLOUD_DEFAULT_REGION}",google_cloud_db_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_k8s_project=${GOOGLE_CLOUD_PROJECT},create_bastion=${CREATE_BASTION}
 
 # cd run/init-db
-
 # gcloud builds submit --config cloudbuild.yaml --region <YOUR_CHOSEN_REGION>
 
 
