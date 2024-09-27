@@ -39,8 +39,7 @@
     "tags": [
       "firestore",
       "gke",
-      "workstations",
-      "workspace"
+      "genai"
     ],
     "category": "application",
     "lastModified": "2024-09-25T11:11:04.000Z",
