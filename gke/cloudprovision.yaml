@@ -16,7 +16,7 @@ create:
     name: gcr.io/cloud-builders/git
     entrypoint: bash
     args: ["-c",
-      "git clone -b main https://github.com/cgrant/cp-utils.git utils"]
+      "git clone -b main https://github.com/sapientcoffee/cp-utils utils"]
   - id: Create deployment with Infra Manager
     name: gcr.io/cloud-builders/gcloud
     env:
