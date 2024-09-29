@@ -1,0 +1,171 @@
+# Copyright 2024 Google LLC
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#     https://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+create:
+  steps:
+  - id: Inspect Values
+    name: ubuntu
+    entrypoint: bash
+    args: ["-c",
+      "echo APP_ID=${_APP_ID} _APP_NAME='${_APP_NAME}' _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      _CREATE_BASTION=${_CREATE_BASTION}_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}
+      _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"]
+  - id: clone App Bundle
+    name: gcr.io/cloud-builders/git
+    entrypoint: bash
+    args: ["-c",
+          "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"]
+  - id: clone cp-utils
+    name: gcr.io/cloud-builders/git
+    entrypoint: bash
+    args: ["-c",
+      "git clone -b main https://github.com/sapientcoffee/cp-utils utils"]
+  - id: Create New project
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_DEFAULT_REGION=${_REGION}
+    - FOLDER_ID=${_FOLDER_ID}
+    - BILLING_ACCOUNT=${_BILLING_ACCOUNT}
+    - CREATE_BASTION=${_CREATE_BASTION}
+    - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    script: "cd workbench-demo/run/scripts && ./create-project.sh"
+  - id: Create deployment with Infra Manager
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_DEFAULT_REGION=${_REGION}
+    - FOLDER_ID=${_FOLDER_ID}
+    - BILLING_ACCOUNT=${_BILLING_ACCOUNT}
+    - CREATE_BASTION=${_CREATE_BASTION}
+    - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    script: "cd workbench-demo/run/scripts && ./create-infrastructure.sh"
+  - id: createApp
+    name: ubuntu
+    env:
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - REGION=${_REGION}
+    - INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}
+    - TEMPLATE_FOLDER=workbench-demo/run
+    - API_KEY=${_API_KEY}
+    script: "./utils/createApp.sh"
+  - id: createGitWebhook - chatbot-api
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - PROJECT_ID=$PROJECT_ID
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GIT_USER=${_INSTANCE_GIT_REPO_OWNER}
+    - GIT_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - REGION=${_REGION}
+    - TEMPLATE_FOLDER=workbench-demo/run/chatbot-api
+    - API_KEY=${_API_KEY}
+    - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    script: "./utils/createWebhook.sh"
+  - id: createGitWebhook - init-db
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - PROJECT_ID=$PROJECT_ID
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GIT_USER=${_INSTANCE_GIT_REPO_OWNER}
+    - GIT_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - REGION=${_REGION}
+    - TEMPLATE_FOLDER=workbench-demo/run/init-db
+    - API_KEY=${_API_KEY}
+    script: "./utils/createWebhook.sh"
+  - id: createGitWebhook - load-embeddings
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - PROJECT_ID=$PROJECT_ID
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GIT_USER=${_INSTANCE_GIT_REPO_OWNER}
+    - GIT_TOKEN=${_INSTANCE_GIT_REPO_TOKEN}
+    - REGION=${_REGION}
+    - TEMPLATE_FOLDER=workbench-demo/run/load-embeddings
+    - API_KEY=${_API_KEY}
+    script: "./utils/createWebhook.sh"
+destroy:
+  steps:
+  - id: Inspect Values
+    name: ubuntu
+    entrypoint: bash
+    args: ["-c",
+      "echo APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
+      _CREATE_BASTION=${_CREATE_BASTION} "]
+inputs:
+- param: _APP_NAME
+  label: Application Name
+  description: Application that will be deployed.
+  type: string
+  required: true
+- param: _GOOGLE_CLOUD_PROJECT
+  label: Google Cloud Project
+  description: Application that will be deployed.
+  type: string
+  required: true
+- param: _REGION
+  label: Application Region
+  description: Where do you want to deploy the application?
+  type: string
+  required: true
+- param: _BILLING_ACCOUNT
+  label: Google Cloud Billing Account
+  description: Instance GitHub Repository Owner
+  type: string
+  required: false
+  display: false
+- param: _FOLDER_ID
+  label: Google Cloud Folder
+  description: Instance GitHub Repository Token
+  type: string
+  required: false
+  display: false
+- param: _CREATE_BASTION
+  label: Bastion Host - true or false
+  description: GCP API Key
+  type: string
+  required: false
+  display: true
+- param: _INSTANCE_GIT_REPO_OWNER
+  label: Instance GitHub Repository Owner
+  description: Instance GitHub Repository Owner
+  type: dropdown
+  required: true
+- param: _INSTANCE_GIT_REPO_TOKEN
+  label: Instance GitHub Repository Token
+  description: Instance GitHub Repository Token
+  type: string
+  required: true
+  display: false
+- param: _API_KEY
+  label: GCP API Key
+  description: GCP API Key
+  type: string
+  required: true
+  display: false
+outputs:
+- param: _BUILD_URL
+  label: Cloud Build Url
+  description: Cloud Build Url
+  type: string
+  required: true

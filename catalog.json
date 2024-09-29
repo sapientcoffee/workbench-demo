@@ -31,14 +31,32 @@
   },
   {
     "id": 10,
-    "name": "Develop a GenAI app",
-    "description": "Deploy a Application Development environment and a GenAI app in less than 30 minutes!",
+    "name": "GenAI app - GKE",
+    "description": "Deploy an application Development environment and a GenAI app t GKE in less than 30 minutes!",
     "sourceUrl": "https://github.com/sapientcoffee/workbench-demo/tree/main/gke",
     "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/sapientcoffee/workbench-demo/refs/heads/main/gke/cloudprovision.yaml",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "tags": [
-      "firestore",
+      "alloydb",
       "gke",
+      "genai"
+    ],
+    "category": "application",
+    "lastModified": "2024-09-25T11:11:04.000Z",
+    "owner": "Rob",
+    "email": "robedwards@google.com",
+    "draft": false
+  },  
+  {
+    "id": 11,
+    "name": "GenAI app - Cloud Run",
+    "description": "Deploy an application Development environment and a GenAI app to Cloud Run in less than 30 minutes!",
+    "sourceUrl": "https://github.com/sapientcoffee/workbench-demo/tree/main/run",
+    "cloudProvisionConfigUrl": "https://raw.githubusercontent.com/sapientcoffee/workbench-demo/refs/heads/main/run/cloudprovision.yaml",
+    "version": "0.0.5",
+    "tags": [
+      "alloydb",
+      "cloudrun",
       "genai"
     ],
     "category": "application",

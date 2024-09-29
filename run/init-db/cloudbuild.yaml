@@ -17,7 +17,7 @@ steps:
   script: |
     docker build -t "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/default-repository/init-db:latest" .
 serviceAccount: 'projects/${PROJECT_ID}/serviceAccounts/cloud-build-sa@${PROJECT_ID}.iam.gserviceaccount.com'
-logsBucket: 'gs://${PROJECT_ID}-cloud-build'
+logsBucket: 'gs://${PROJECT_ID}_cloudbuild'
 images:
 - "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/default-repository/init-db:latest"
 options:
