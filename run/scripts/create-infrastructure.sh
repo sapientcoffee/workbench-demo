@@ -19,7 +19,7 @@
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 
 echo "Initiating the deployment"
-gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-central1/deployments/workbench-deployment \
+gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-central1/deployments/workbench-deployment-run \
     --service-account projects/${PROJECT_ID}/serviceAccounts/infra-manager@${PROJECT_ID}.iam.gserviceaccount.com \
     --git-source-repo=https://github.com/sapientcoffee/workbench-demo \
     --git-source-directory=run/terraform \
