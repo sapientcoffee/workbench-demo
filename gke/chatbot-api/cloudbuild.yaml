@@ -19,3 +19,5 @@ steps:
   automapSubstitutions: true
 images:
 - "${LOCATION}-docker.pkg.dev/${PROJECT_ID}/default-repository/chatbotapi:latest"
+serviceAccount: 'projects/${PROJECT_ID}/serviceAccounts/cloud-build-sa@${PROJECT_ID}.iam.gserviceaccount.com'
+logsBucket: 'gs://${PROJECT_ID}_cloudbuild'
