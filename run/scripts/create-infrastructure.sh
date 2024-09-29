@@ -24,7 +24,7 @@ gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-centr
     --git-source-repo=https://github.com/sapientcoffee/workbench-demo \
     --git-source-directory=run/terraform \
     --git-source-ref=main \
-    --input-values=google_cloud_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_default_region="${GOOGLE_CLOUD_DEFAULT_REGION}",google_cloud_db_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_k8s_project=${GOOGLE_CLOUD_PROJECT},create_bastion=${CREATE_BASTION}
+    --input-values=google_cloud_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_default_region="${GOOGLE_CLOUD_DEFAULT_REGION}",google_cloud_db_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_run_project=${GOOGLE_CLOUD_PROJECT},create_bastion=${CREATE_BASTION}
 
 # cd run/init-db
 # gcloud builds submit --config cloudbuild.yaml --region <YOUR_CHOSEN_REGION>
