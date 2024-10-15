@@ -22,40 +22,47 @@ export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 # echo $SERVICE_ACCOUNT
 
 echo "Creating the project ${GOOGLE_CLOUD_PROJECT}"
-# gcloud projects create ${_GOOGLE_CLOUD_PROJECT}
+gcloud projects create ${_GOOGLE_CLOUD_PROJECT} \
+  --billing-account= ${_BILLING_ACCOUNT}
+
+# PROJECT_ID="appdev-genai-${RANDOM_STRING}" # Replace ${RANDOM_STRING}
+# gcloud projects create "${PROJECT_ID}" \
+#   --folder="${FOLDER_ID}" \
+#   --billing-account="${BILLING_ACCOUNT}"
 # gcloud projects create coffeedev-002
 
-echo "Linking the billing account"
-echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
+# echo "Linking the billing account"
+# echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
 # gcloud billing projects link ${GOOGLE_CLOUD_PROJECT} \
 #     --billing-account ${_BILLING_ACCOUNT}
 # gcloud billing projects link coffeedev-002 \
 #     --billing-account 017C65-6AC5ED-18E460
 
-
-# gcloud iam service-accounts create cloud-build-sa \
-#   --display-name "Cloud Build Service Account" \
-#   --project coffeedev-002
-
-# gcloud projects add-iam-policy-binding coffeedev-002 \
-#   --member "serviceAccount:cloud-build-sa@coffeedev-002.iam.gserviceaccount.com" \
-#   --role "roles/cloudbuild.serviceAgent"
-
-
 echo "Enabling services in ${GOOGLE_CLOUD_PROJECT}"
-# gcloud services enable \
-#   storage.googleapis.com \
-#   sqladmin.googleapis.com \
-#   artifactregistry.googleapis.com \
-#   cloudbuild.googleapis.com \
-#   container.googleapis.com \
-#   dns.googleapis.com \
-#   compute.googleapis.com \
-#   alloydb.googleapis.com \
-#   cloudaicompanion.googleapis.com \
-#   dataform.googleapis.com \
-#   aiplatform.googleapis.com \
-#   --project=${GOOGLE_CLOUD_PROJECT}
+gcloud services enable \
+  storage.googleapis.com \
+  sqladmin.googleapis.com \
+  artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  container.googleapis.com \
+  dns.googleapis.com \
+  compute.googleapis.com \
+  alloydb.googleapis.com \
+  cloudaicompanion.googleapis.com \
+  dataform.googleapis.com \
+  aiplatform.googleapis.com \
+  --project=${GOOGLE_CLOUD_PROJECT}
+
+gcloud iam service-accounts create cloud-build-sa \
+  --display-name "Cloud Build Service Account" \
+  --project ${GOOGLE_CLOUD_PROJECT}
+
+gcloud projects add-iam-policy-binding coffeedev-002 \
+  --member "serviceAccount:cloud-build-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
+  --role "roles/cloudbuild.serviceAgent"
+
+
+
 
 # Add Service Account
 # gcloud projects add-iam-policy-binding coffeedev-002 \

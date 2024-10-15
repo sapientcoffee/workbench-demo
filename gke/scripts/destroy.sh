@@ -18,8 +18,11 @@
 
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 
-gcloud projects delete coffeedev-001
+gcloud projects delete ${_GOOGLE_CLOUD_PROJECT}
 
 # Region for Infra Manager is hard-coded to us-central1
 # gcloud infra-manager deployments delete projects/${PROJECT_ID}/locations/us-central1/deployments/${APP_ID}
-gcloud infra-manager deployments delete projects/coffeebench/locations/us-central1/deployments/workbench-deployment
+gcloud infra-manager deployments delete projects/${PROJECT_ID}/locations/us-central1/deployments/workbench-deployment
+
+
+#   gcloud builds triggers delete TRIGGER_NAME
