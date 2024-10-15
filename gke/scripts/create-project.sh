@@ -49,7 +49,7 @@ gcloud services enable \
   aiplatform.googleapis.com \
   config.googleapis.com \
   secretmanager.googleapis.com \
-  --project=${GOOGLE_CLOUD_PROJECT}-${random_number}
+  --project=${GOOGLE_CLOUD_PROJECT}
 
 # gcloud iam service-accounts create cloud-build-sa \
 #   --display-name "Cloud Build Service Account" \
