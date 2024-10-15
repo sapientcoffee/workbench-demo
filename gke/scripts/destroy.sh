@@ -22,7 +22,7 @@ gcloud projects delete ${GOOGLE_CLOUD_PROJECT}
 
 # Region for Infra Manager is hard-coded to us-central1
 # gcloud infra-manager deployments delete projects/${PROJECT_ID}/locations/us-central1/deployments/${APP_ID}
-gcloud infra-manager deployments delete projects/${PROJECT_ID}/locations/us-central1/deployments/workbench-deployment
+gcloud infra-manager deployments delete projects/${PROJECT_ID}/locations/us-central1/deployments/${GOOGLE_CLOUD_PROJECT}-deployment
 
 
 #   gcloud builds triggers delete TRIGGER_NAME
