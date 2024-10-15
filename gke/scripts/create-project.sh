@@ -17,26 +17,25 @@
 # set -o pipefail # fail if any component of any pipe fails
 
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
-# export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
+export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
 
-# echo $SERVICE_ACCOUNT
+echo ${SERVICE_ACCOUNT}
 
 echo "Creating the project ${GOOGLE_CLOUD_PROJECT}"
-gcloud projects create ${_GOOGLE_CLOUD_PROJECT} \
-  --billing-account= ${_BILLING_ACCOUNT}
-
+gcloud projects create ${_GOOGLE_CLOUD_PROJECT} 
+ 
 # PROJECT_ID="appdev-genai-${RANDOM_STRING}" # Replace ${RANDOM_STRING}
 # gcloud projects create "${PROJECT_ID}" \
 #   --folder="${FOLDER_ID}" \
 #   --billing-account="${BILLING_ACCOUNT}"
 # gcloud projects create coffeedev-002
 
-# echo "Linking the billing account"
+echo "Linking the billing account"
 # echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
 # gcloud billing projects link ${GOOGLE_CLOUD_PROJECT} \
 #     --billing-account ${_BILLING_ACCOUNT}
-# gcloud billing projects link coffeedev-002 \
-#     --billing-account 017C65-6AC5ED-18E460
+gcloud billing projects link ${GOOGLE_CLOUD_PROJECT} \
+    --billing-account 017C65-6AC5ED-18E460
 
 echo "Enabling services in ${GOOGLE_CLOUD_PROJECT}"
 gcloud services enable \
