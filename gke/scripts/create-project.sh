@@ -20,14 +20,16 @@ echo "${SERVICE_ACCOUNT} on ${PROJECT_ID}"
 
 echo "Creating the project ${GOOGLE_CLOUD_PROJECT}"
 gcloud projects create ${GOOGLE_CLOUD_PROJECT} \
-  --organization "1093091204297"
+  --folder "973220728174"
  
+  # --organization "1093091204297"\
 
 
 echo "Linking the billing account"
-echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
+gcloud services enable cloudbilling.googleapis.com
+# echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
 gcloud billing projects link ${GOOGLE_CLOUD_PROJECT} \
-    --billing-account 017C65-6AC5ED-18E460
+    --billing-account "017C65-6AC5ED-18E460"
 
 echo "Enabling services in ${GOOGLE_CLOUD_PROJECT}"
 gcloud services enable \
