@@ -12,29 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# set -e # bail out early if any command fails
-# set -u # fail if we hit unset variables
-# set -o pipefail # fail if any component of any pipe fails
-
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
 
-echo ${SERVICE_ACCOUNT}
+echo "${SERVICE_ACCOUNT} on ${PROJECT_ID}"
+
 
 echo "Creating the project ${GOOGLE_CLOUD_PROJECT}"
 gcloud projects create ${GOOGLE_CLOUD_PROJECT} \
   --organization "1093091204297"
  
-# PROJECT_ID="appdev-genai-${RANDOM_STRING}" # Replace ${RANDOM_STRING}
-# gcloud projects create "${PROJECT_ID}" \
-#   --folder="${FOLDER_ID}" \
-#   --billing-account="${BILLING_ACCOUNT}"
-# gcloud projects create coffeedev-002
+
 
 echo "Linking the billing account"
-# echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
-# gcloud billing projects link ${GOOGLE_CLOUD_PROJECT} \
-#     --billing-account ${_BILLING_ACCOUNT}
+echo "debuging entry: new project is ${GOOGLE_CLOUD_PROJECT} and billing is ${BILLING_ACCOUNT}"
 gcloud billing projects link ${GOOGLE_CLOUD_PROJECT} \
     --billing-account 017C65-6AC5ED-18E460
 
@@ -53,13 +44,13 @@ gcloud services enable \
   aiplatform.googleapis.com \
   --project=${GOOGLE_CLOUD_PROJECT}
 
-gcloud iam service-accounts create cloud-build-sa \
-  --display-name "Cloud Build Service Account" \
-  --project ${GOOGLE_CLOUD_PROJECT}
+# gcloud iam service-accounts create cloud-build-sa \
+#   --display-name "Cloud Build Service Account" \
+#   --project ${GOOGLE_CLOUD_PROJECT}
 
-gcloud projects add-iam-policy-binding coffeedev-002 \
-  --member "serviceAccount:cloud-build-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
-  --role "roles/cloudbuild.serviceAgent"
+# gcloud projects add-iam-policy-binding coffeedev-002 \
+#   --member "serviceAccount:cloud-build-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
+#   --role "roles/cloudbuild.serviceAgent"
 
 
 
