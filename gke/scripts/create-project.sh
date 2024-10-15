@@ -22,7 +22,7 @@ export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(
 echo ${SERVICE_ACCOUNT}
 
 echo "Creating the project ${GOOGLE_CLOUD_PROJECT}"
-gcloud projects create ${_GOOGLE_CLOUD_PROJECT} 
+gcloud projects create ${GOOGLE_CLOUD_PROJECT} 
  
 # PROJECT_ID="appdev-genai-${RANDOM_STRING}" # Replace ${RANDOM_STRING}
 # gcloud projects create "${PROJECT_ID}" \

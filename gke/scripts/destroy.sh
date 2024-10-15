@@ -18,7 +18,7 @@
 
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 
-gcloud projects delete ${_GOOGLE_CLOUD_PROJECT}
+gcloud projects delete ${GOOGLE_CLOUD_PROJECT}
 
 # Region for Infra Manager is hard-coded to us-central1
 # gcloud infra-manager deployments delete projects/${PROJECT_ID}/locations/us-central1/deployments/${APP_ID}
