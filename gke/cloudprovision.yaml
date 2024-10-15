@@ -112,6 +112,19 @@ destroy:
     args: ["-c",
       "echo APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION} "]
+  - id: Delete project
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_DEFAULT_REGION=${_REGION}
+    - FOLDER_ID=${_FOLDER_ID}
+    - BILLING_ACCOUNT=${_BILLING_ACCOUNT}
+    - CREATE_BASTION=${_CREATE_BASTION}
+    - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    script: "cd workbench-demo/gke/scripts && ./destroy.sh"
 inputs:
 - param: _APP_NAME
   label: Application Name
