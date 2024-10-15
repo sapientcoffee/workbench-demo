@@ -51,32 +51,70 @@ gcloud services enable \
   secretmanager.googleapis.com \
   --project=${GOOGLE_CLOUD_PROJECT}
 
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:app-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
+  --role="roles/aiplatform.user"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:app-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
+  --role="roles/cloudsql.instanceUser"
+
 # gcloud iam service-accounts create cloud-build-sa \
 #   --display-name "Cloud Build Service Account" \
 #   --project ${GOOGLE_CLOUD_PROJECT}
 
-# gcloud projects add-iam-policy-binding coffeedev-002 \
+# gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
 #   --member "serviceAccount:cloud-build-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
 #   --role "roles/cloudbuild.serviceAgent"
 
+# Allow infra-manager account in coffeebench project to acceess the new project
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/viewer"
 
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/compute.networkAdmin"
 
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/resourcemanager.projectAgent"
 
-# Add Service Account
-# gcloud projects add-iam-policy-binding coffeedev-002 \
-#   --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
-#   --role="roles/viewer" \
-#   --role="roles/compute.networkAdmin" \
-#   --role="roles/resourcemanager.projectAgent" \
-#   --role="roles/billing.projectManager" \
-#   --role="roles/serviceusage.consumer" \
-#   --role="roles/storage.admin" \
-#   --role="roles/storage.objectCreator" \
-#   --role="roles/compute.securityAdmin" \
-#   --role="roles/iam.serviceAccountAdmin" \
-#   --role="roles/alloydb.admin" \
-#   --role="roles/dns.admin" \
-#   --role="roles/artifactregistry.admin" 
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/billing.projectManager"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/serviceusage.consumer"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/storage.admin"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/storage.objectCreator"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/compute.securityAdmin"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/iam.serviceAccountAdmin"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/alloydb.admin"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/dns.admin"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --role="roles/artifactregistry.admin"
 
 # Region for Infra Manager is hard-coded to us-central1
 # gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-central1/deployments/${APP_ID} \
