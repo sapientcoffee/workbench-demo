@@ -44,6 +44,7 @@ gcloud services enable \
   cloudaicompanion.googleapis.com \
   dataform.googleapis.com \
   aiplatform.googleapis.com \
+  config.googleapis.com \
   --project=${GOOGLE_CLOUD_PROJECT}
 
 # gcloud iam service-accounts create cloud-build-sa \
