@@ -15,6 +15,9 @@
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 export SERVICE_ACCOUNT=$(gcloud projects describe ${PROJECT_ID} --format="value(projectNumber)")-compute@developer.gserviceaccount.com
 
+random_number=$RANDOM
+
+
 echo "${SERVICE_ACCOUNT} on ${PROJECT_ID}"
 
 
@@ -45,7 +48,8 @@ gcloud services enable \
   dataform.googleapis.com \
   aiplatform.googleapis.com \
   config.googleapis.com \
-  --project=${GOOGLE_CLOUD_PROJECT}
+  secretmanager.googleapis.com \
+  --project=${GOOGLE_CLOUD_PROJECT}-${random_number}
 
 # gcloud iam service-accounts create cloud-build-sa \
 #   --display-name "Cloud Build Service Account" \
