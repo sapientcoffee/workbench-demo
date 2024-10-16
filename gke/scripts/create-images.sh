@@ -16,7 +16,7 @@
 directories=("../init-db" "../chatbot-api" "../load-embeddings")
 
 # Command to execute in each directory
-command="gcloud builds submit --config cloudbuild.yaml --region us-east1 --project ${GOOGLE_CLOUD_PROJECT}"
+command="gcloud builds submit --config cloudbuild.yaml --region ${GOOGLE_CLOUD_DEFAULT_REGION} --project ${GOOGLE_CLOUD_PROJECT}"
 
 # Loop through each directory
 for dir in "${directories[@]}"; do
@@ -32,6 +32,3 @@ for dir in "${directories[@]}"; do
 done
 
 echo "Finished processing all directories."
-
-
-# gcloud builds submit --config cloudbuild.yaml --region us-east1

@@ -68,3 +68,4 @@ spec:
             ephemeral-storage: 1Gi
             memory: 2Gi
       restartPolicy: Never
+
