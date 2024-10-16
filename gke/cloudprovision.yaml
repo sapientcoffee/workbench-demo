@@ -20,17 +20,17 @@ create:
       "echo APP_ID=${_APP_ID} _APP_NAME='${_APP_NAME}' _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION}_INSTANCE_GIT_REPO_OWNER=${_INSTANCE_GIT_REPO_OWNER}
       _INSTANCE_GIT_REPO_TOKEN=${_INSTANCE_GIT_REPO_TOKEN} _API_KEY=${_API_KEY}"]
-  - id: clone App Bundle
+  - id: Clone AppBundle Repo
     name: gcr.io/cloud-builders/git
     entrypoint: bash
     args: ["-c",
           "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"]
-  - id: clone cp-utils
+  - id: Obtain useful tools
     name: gcr.io/cloud-builders/git
     entrypoint: bash
     args: ["-c",
       "git clone -b main https://github.com/sapientcoffee/cp-utils utils"]
-  - id: Create New project
+  - id: Create new project to deploy AppBundle
     name: gcr.io/cloud-builders/gcloud
     env:
     - APP_ID=${_APP_ID}
@@ -43,7 +43,7 @@ create:
     - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     script: "cd workbench-demo/gke/scripts && ./create-project.sh"
-  - id: Create deployment with Infra Manager
+  - id: Create AppBundle infrastructure (GKE) with Infrastructure Manager
     name: gcr.io/cloud-builders/gcloud
     env:
     - APP_ID=${_APP_ID}
@@ -56,7 +56,7 @@ create:
     - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     script: "cd workbench-demo/gke/scripts && ./create-infrastructure.sh"
-  - id: createApp
+  - id: Create app from template
     name: ubuntu
     env:
     - APP_ID=${_APP_ID}
@@ -67,7 +67,7 @@ create:
     - TEMPLATE_FOLDER=workbench-demo/gke
     - API_KEY=${_API_KEY}
     script: "./utils/createApp.sh"
-  - id: createGitWebhook - chatbot-api
+  - id: Create Cloud Build webhook for 'chatbot-api'
     name: gcr.io/cloud-builders/gcloud
     env:
     - PROJECT_ID=$PROJECT_ID
@@ -80,7 +80,7 @@ create:
     - API_KEY=${_API_KEY}
     - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
     script: "./utils/createWebhook.sh"
-  - id: createGitWebhook - init-db
+  - id: Create Cloud Build webhook for 'init-db'
     name: gcr.io/cloud-builders/gcloud
     env:
     - PROJECT_ID=$PROJECT_ID
@@ -92,7 +92,7 @@ create:
     - TEMPLATE_FOLDER=workbench-demo/gke/init-db
     - API_KEY=${_API_KEY}
     script: "./utils/createWebhook.sh"
-  - id: createGitWebhook - load-embeddings
+  - id: Create Cloud Build webhook for 'load-embeddings'
     name: gcr.io/cloud-builders/gcloud
     env:
     - PROJECT_ID=$PROJECT_ID
