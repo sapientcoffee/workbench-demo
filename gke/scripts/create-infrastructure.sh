@@ -26,6 +26,21 @@ gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/${GOOGLE
     --git-source-ref=main \
     --input-values=google_cloud_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_default_region="${GOOGLE_CLOUD_DEFAULT_REGION}",google_cloud_db_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_k8s_project=${GOOGLE_CLOUD_PROJECT},create_bastion=${CREATE_BASTION}
 
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  --role="roles/artifactregistry.writer"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  --role="roles/logging.logWriter"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  --role="roles/storage.objectViewer"
+
+
+
 # cd run/init-db
 # gcloud builds submit --config cloudbuild.yaml --region <YOUR_CHOSEN_REGION>
 
