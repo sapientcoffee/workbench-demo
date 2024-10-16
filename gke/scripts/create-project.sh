@@ -69,52 +69,61 @@ gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
 
 # Allow infra-manager account in coffeebench project to acceess the new project
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/viewer"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/compute.networkAdmin"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/resourcemanager.projectAgent"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/billing.projectManager"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/serviceusage.consumer"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/storage.admin"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/storage.objectCreator"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/compute.securityAdmin"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountAdmin"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/alloydb.admin"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/dns.admin"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:infra-manager@coffeebench.iam.gserviceaccount.com" \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
   --role="roles/artifactregistry.admin"
+
+## !!!!!!! Need to reduce this down, put in place to speed up development TODO: 
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/editor"
+
+gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+  --member="serviceAccount:infra-manager@${PROJECT_ID}.iam.gserviceaccount.com" \
+  --role="roles/owner" 
 
 # Region for Infra Manager is hard-coded to us-central1
 # gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/us-central1/deployments/${APP_ID} \
