@@ -112,6 +112,11 @@ destroy:
     args: ["-c",
       "echo APP_ID=${_APP_ID} _APP_NAME=${_APP_NAME} _GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT} _GOOGLE_CLOUD_DEFAULT_REGION='${_REGION}' _BILLING_ACCOUNT=${_BILLING_ACCOUNT} _FOLDER_ID=${_FOLDER_ID}
       _CREATE_BASTION=${_CREATE_BASTION} "]
+  - id: Clone AppBundle Repo
+    name: gcr.io/cloud-builders/git
+    entrypoint: bash
+    args: ["-c",
+          "git clone -b main https://github.com/sapientcoffee/workbench-demo.git"]
   - id: Delete project
     name: gcr.io/cloud-builders/gcloud
     env:
