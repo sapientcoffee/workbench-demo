@@ -27,16 +27,20 @@ gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/${GOOGLE
     --input-values=google_cloud_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_default_region="${GOOGLE_CLOUD_DEFAULT_REGION}",google_cloud_db_project="${GOOGLE_CLOUD_PROJECT}",google_cloud_k8s_project=${GOOGLE_CLOUD_PROJECT},create_bastion=${CREATE_BASTION}
 
 
+PROJECT_NUMBER=$(gcloud projects list --filter="name=${GOOGLE_CLOUD_PROJECT}" --format="value(PROJECT_NUMBER)")
+
+echo "undating ${PROJECT_NUMBER}-compute@developer.gserviceaccount.com with additional roles"
+
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
   --role="roles/artifactregistry.writer"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
   --role="roles/logging.logWriter"
 
 gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:${PROJECT_ID}-compute@developer.gserviceaccount.com" \
+  --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
   --role="roles/storage.objectViewer"
 
 
