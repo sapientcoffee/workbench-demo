@@ -51,13 +51,13 @@ gcloud services enable \
   secretmanager.googleapis.com \
   --project=${GOOGLE_CLOUD_PROJECT}
 
-gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:app-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
-  --role="roles/aiplatform.user"
+# gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+#   --member="serviceAccount:app-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
+#   --role="roles/aiplatform.user"
 
-gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
-  --member="serviceAccount:app-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
-  --role="roles/cloudsql.instanceUser"
+# gcloud projects add-iam-policy-binding ${GOOGLE_CLOUD_PROJECT} \
+#   --member="serviceAccount:app-sa@${GOOGLE_CLOUD_PROJECT}.iam.gserviceaccount.com" \
+#   --role="roles/cloudsql.instanceUser"
 
 # gcloud iam service-accounts create cloud-build-sa \
 #   --display-name "Cloud Build Service Account" \
