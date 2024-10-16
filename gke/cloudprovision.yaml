@@ -104,6 +104,19 @@ create:
     - TEMPLATE_FOLDER=workbench-demo/gke/load-embeddings
     - API_KEY=${_API_KEY}
     script: "./utils/createWebhook.sh"
+  - id: Build app container images
+    name: gcr.io/cloud-builders/gcloud
+    env:
+    - APP_ID=${_APP_ID}
+    - APP_NAME=${_APP_NAME}
+    - GOOGLE_CLOUD_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_DEFAULT_REGION=${_REGION}
+    - FOLDER_ID=${_FOLDER_ID}
+    - BILLING_ACCOUNT=${_BILLING_ACCOUNT}
+    - CREATE_BASTION=${_CREATE_BASTION}
+    - GOOGLE_CLOUD_DB_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    - GOOGLE_CLOUD_K8S_PROJECT=${_GOOGLE_CLOUD_PROJECT}
+    script: "cd workbench-demo/gke/scripts && ./create-images.sh"
 destroy:
   steps:
   - id: Inspect Values
