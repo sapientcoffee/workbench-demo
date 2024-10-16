@@ -19,7 +19,7 @@
 export PROJECT_ID=$(gcloud config list --format 'value(core.project)')
 
 echo "Initiating the deployment"
-gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/${REGION}/deployments/${GOOGLE_CLOUD_PROJECT}-deployment \
+gcloud infra-manager deployments apply projects/${PROJECT_ID}/locations/${GOOGLE_CLOUD_DEFAULT_REGION}/deployments/${GOOGLE_CLOUD_PROJECT}-deployment \
     --service-account projects/${PROJECT_ID}/serviceAccounts/infra-manager@${PROJECT_ID}.iam.gserviceaccount.com \
     --git-source-repo=https://github.com/sapientcoffee/workbench-demo \
     --git-source-directory=gke/terraform \
